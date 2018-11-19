@@ -15,7 +15,7 @@ if ($action=="send_file") // Most probably: linux server.
 	if (isPreProductionVersion())
 	{
 		// URL EXAMPLE: http://localhost/uniflip.server.communication/?file=473546384-1415464062.upl&action=send_file
-		// URL EXAMPLE: http://81.7.134.38/uniflip.server.communication/?file=473546384-1415464062.upl&action=send_file
+		// URL EXAMPLE: http://81.7.134.38/com.server/?file=1673811335-1204973160.upl&action=send_file
 		define("UNIFLIP_FOLDER", "uniflip.com/html");	
 	}
 	else
@@ -23,7 +23,7 @@ if ($action=="send_file") // Most probably: linux server.
 		define("UNIFLIP_FOLDER", "uniflip4.com");	
 	}
 	
-	define("UPLOADS_PATH", "../".UNIFLIP_FOLDER."/member/upload1/uploads/");
+	define("UPLOADS_PATH", "../../".UNIFLIP_FOLDER."/member/upload1/uploads/");
 
 	if ($file_content= file_get_contents(UPLOADS_PATH.$file))
 	{
