@@ -34,7 +34,8 @@ define("SERVER_PATH", GET_OUT_PATH.UNIFLIP_FOLDER);
 define("UPLOADS_PATH", SERVER_PATH."member/upload1/uploads/");
 
 include(SERVER_PATH."_conf.php");
-include("./database.php");
+include("./linux.php");
+include("./cutter.php");
 
 $memberId = getRequest("memberid");
 $catalogId = getRequest("catalogid");
@@ -52,41 +53,50 @@ switch ($action) {
 	// STEP 1: LINUX > CUTTER *********************************************************************
 	case 'start_cutting_process': 
 		// We prepare the cutter for receive info.
-			$url = ABSOLUTE_CUTTER_URL;
-			$url .= "?catalogid=" . $catalogId;
-			$url .= "&memberid=" . $memberId;
-			$url .= "&file=" . $file;
-			$url .= "&action=sending_first_info";
-			$urlOutput = file_get_contents($url);
-			showAsLink($url);
-			pinta($urlOutput);
-			pinta("fin", true);
+		updateCatalogPDFInfo($memberId, $catalogId, STATUS_LINUX_CUTTER_0);
+		$url = ABSOLUTE_CUTTER_URL;
+		$url .= "?catalogid=" . $catalogId;
+		$url .= "&memberid=" . $memberId;
+		$url .= "&file=" . $file;
+		$url .= "&action=sending_first_info";
+		$urlOutput = file_get_contents($url);
+		showAsLink($url);
+		pinta($urlOutput);
+		pinta("fin", true);
 
 	// STEP 2: CUTTER > LINUX *********************************************************************
 	case 'sending_first_info': 
-		// We prepare the cutter for receive info.
-			$url = ABSOLUTE_LINUX_URL;
-			$url .= "?catalogid=" . $catalogId;
-			$url .= "&memberid=" . $memberId;
-			$url .= "&action=request_catalog_data";
-			$urlOutput = file_get_contents($url);
-			$catalogData= json_decode($urlOutput);
-			showAsLink($url);
-			pinta($urlOutput);
-			pinta($catalogData);
-			pinta("fin", true);
+		// We ask for hte Linux server about catalog info and uploaded file.
+		$url = ABSOLUTE_LINUX_URL;
+		$url .= "?catalogid=" . $catalogId;
+		$url .= "&memberid=" . $memberId;
+		$url .= "&action=request_catalog_data";
+		$catalogData = json_decode(file_get_contents($url)); // Now, we have the catalog info, but we need to insert it into the database..
 
+		$url = ABSOLUTE_LINUX_URL;
+		$url .= "?file=" . $file;
+		$url .= "&action=request_file";
+		$catalogFile = file_get_contents($url);
+		file_put_contents(UPLOADS_PATH.$file, $catalogFile); // Now, we have the .upl file stored.
+
+		$cutterCatalogId= createCatalogCutter2($catalogData);
+		showAsLink($url);
+		pinta($urlOutput);
+		pinta($catalogData);
+		pinta("fin", true);
+
+	// STEP 2.1: LINUX > CUTTER *********************************************************************
 	case 'request_catalog_data':
-		// First, we get the full catalog info.
+		// We get the full catalog info.
+		updateCatalogPDFInfo($memberId, $catalogId, STATUS_LINUX_CUTTER_1);
 		$catalogInfo= getCatalog($memberId, $catalogId, true);
 		die($catalogInfo);
 		break;
 
-	case 'send_file': // Most probably: linux server.
-		// At this point, this scrip is being calling FROM the cutter server and is executed IN the linux server.
-
-
-
+	// STEP 2.2: LINUX > CUTTER *********************************************************************
+	case 'request_file': // Most probably: linux server.
+		// We serve the uploaded file.
+		updateCatalogPDFInfo($memberId, $catalogId, STATUS_LINUX_CUTTER_2);
 		if ($file_content= file_get_contents(UPLOADS_PATH.$file))
 		{
 			die($file_content);
