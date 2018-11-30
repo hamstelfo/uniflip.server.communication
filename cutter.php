@@ -1,7 +1,13 @@
 <?php
 
+define("CUTTER_EXTERNAL_USER_ID", 	86855);
+
 function createCatalogCutter2($catalog)
 {
+	//pinta($catalog);
+
+	$catalog["userid"]= CUTTER_EXTERNAL_USER_ID;
+
 	$localCatalogPath = "" . localCatalogPath;
 	$remoteCatalogPath = "" . remoteCatalogPath;
 	$localCatalogServer = "" . localCatalogServer;
@@ -18,7 +24,6 @@ function createCatalogCutter2($catalog)
 
 
 	$oUnicodeReplace = new unicode_replace_entities();
-	$rAction = $catalog["action"];
 	$rCatalogname = $catalog["catalogname"];
 	$rCatalogname = urldecode($rCatalogname);
 	//$rCatalogname = js_unescape_to_html($rCatalogname);
@@ -150,7 +155,7 @@ function createCatalogCutter2($catalog)
 	//flush();
 	
 	
-	logCMSChanges("catalogid" . $catalogId, "New publication [external].", $logCMSChangesUniFlipUserId);
+	logCMSChanges("catalogid" . $catalogId, "New publication [external].", $catalog["userid"]);
 	logCMSChanges("userid" . $catalog["userid"], "New publication [external] " . $catalogId . ".", $logCMSChangesUniFlipUserId);
 	sleep(1);
 	

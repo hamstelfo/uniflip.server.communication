@@ -3,8 +3,7 @@
 define("STATUS_LINUX_CUTTER_0", "Starting Cutter communication");
 define("STATUS_LINUX_CUTTER_1", "Sending info to the Cutter");
 define("STATUS_LINUX_CUTTER_2", "Sending file to the Cutter");
-define("STATUS_LINUX_CUTTER_3", "");
-define("STATUS_LINUX_CUTTER_4", "");
+define("STATUS_LINUX_CUTTER_3", "Cutter is processing the catalog");
 
 function getCatalogInfo($memberId, $catalogId, $asJson= false)
 {
@@ -30,12 +29,17 @@ function getCatalogInfo($memberId, $catalogId, $asJson= false)
 }
 
 
-function updateCatalogPDFInfo($memberId, $catalogId, $pdfInfo)
+function updateCatalogPDFInfo($memberId, $catalogId, $pdfInfo, $stopProccessByTest= false)
 {
 	dbOpen();
 	$sql= "UPDATE `catalogs` SET `pdfinfo` = '".$pdfInfo."' WHERE `id` = '".$catalogId."' AND `userid`='".$memberId."' \r\n";
 	$result = dBQuery($sql) or die("Query failed: " . dBError());
 	dbClose();
+
+	if ($stopProccessByTest)
+	{
+		die("Process stopped for testing purposes.");
+	}
 
 	return $result;
 }
