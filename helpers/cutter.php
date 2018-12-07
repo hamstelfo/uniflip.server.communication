@@ -24,19 +24,19 @@ function createCatalogCutter2($catalog)
 
 
 	$oUnicodeReplace = new unicode_replace_entities();
-	$rCatalogname = $catalog["catalogname"];
+	$rCatalogname = @$catalog["catalogname"];
 	$rCatalogname = urldecode($rCatalogname);
 	//$rCatalogname = js_unescape_to_html($rCatalogname);
 	$rCatalogname = $oUnicodeReplace->UTF8entities($rCatalogname);
-	$rCatalogfile = $catalog["catalogfile"];
-	$rCatalogfileURL = $catalog["catalogfileURL"];
-	$rCatalogfilepassword = $catalog["catalogfilepassword"];
+	$rCatalogfile = @$catalog["catalogfile"];
+	$rCatalogfileURL = @$catalog["catalogfileURL"];
+	$rCatalogfilepassword = @$catalog["catalogfilepassword"];
 	//$rCataloglogofile = $catalog["");
-	$rCataloglanguage = $catalog["cataloglanguage"];
-	$rCataloglayout = $catalog["cataloglayout"];
-	$rCatalogrighttoleft = $catalog["catalogrighttoleft"];
-	$rCatalogbackgroundsound = $catalog["catalogbackgroundsound"];
-	$rCatalogconvertingmethod = $catalog["catalogconvertingmethod"];
+	$rCataloglanguage = @$catalog["cataloglanguage"];
+	$rCataloglayout = @$catalog["cataloglayout"];
+	$rCatalogrighttoleft = @$catalog["catalogrighttoleft"];
+	$rCatalogbackgroundsound = @$catalog["catalogbackgroundsound"];
+	$rCatalogconvertingmethod = @$catalog["catalogconvertingmethod"];
 	$rCatalogid = "0";
 	if ($rCatalogconvertingmethod == "")
 	  $rCatalogconvertingmethod = "1";
@@ -156,7 +156,7 @@ function createCatalogCutter2($catalog)
 	
 	
 	logCMSChanges("catalogid" . $catalogId, "New publication [external].", $catalog["userid"]);
-	logCMSChanges("userid" . $catalog["userid"], "New publication [external] " . $catalogId . ".", $logCMSChangesUniFlipUserId);
+	logCMSChanges("userid" . $catalog["userid"], "New publication [external] " . $catalogId . ".", @$logCMSChangesUniFlipUserId);
 	sleep(1);
 	
 	
