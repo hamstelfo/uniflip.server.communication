@@ -29,7 +29,7 @@
 		$url .= "&memberid=" . $memberId.urlTest();
 		linkIfLocalhost($url);
 		//die("mitad cutter_requesting 4.");
-		if ($catalogFile = fileGetContents($url))
+		if ($catalogFileContent = fileGetContents($url))
 		{
 			//pinta($catalogFile);
 			//die("mitad cutter_requesting 5.");
@@ -38,26 +38,25 @@
 			 * @link https://shellcreeper.com/?p=1249
 			 */
 			/* Copy the file from source url to server */
-			$copy = copy( $catalogFile, $catalogFile.".new" );
+			//$copy = copy( $catalogFile, $catalogFile.".new" );
 			 
 			/* Add notice for success/failure */
-			if( !$copy ) {
+			/*if( !$copy ) {
 			    echo "Doh! failed to copy $file...\n";
 			}
 			else{
 			    echo "WOOT! success to copy $file...\n";
-			}
-			//file_put_contents(UPLOADS_PATH.$file, $catalogFile.".new"); // Now, we have the .upl file stored.
+			}*/
+			file_put_contents(UPLOADS_PATH.$file.".new", $catalogFileContent); // Now, we have the .upl file stored.
 
 			//pinta($cutterCatalogId);
-			linkIfLocalhost($catalogFile);			
+			//linkIfLocalhost($catalogFile);			
 			//linkIfLocalhost(UPLOADS_PATH.$file);
 			//pinta($catalogFile);
 
 			$url = ABSOLUTE_LINUX_URL."cutter_runs_alone.php";
 			$url .= "?catalogid=" . $catalogId;
 			$url .= "&memberid=" . $memberId.urlTest();
-			$url .= "&action=";
 			linkIfLocalhost($url);
 			fileGetContents($url); // Just say the Linux that we can start the cutter process now..
 		}
