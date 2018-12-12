@@ -125,4 +125,45 @@ function curl_get($url, array $get = array(), array $options = array())
     curl_close($ch); 
     return $result; 
 } 
+
+function zipFile($file)
+{
+	$zipName= $file.'.zip';
+	$zip = new ZipArchive;
+	if ($zip->open($zipName, ZipArchive::CREATE) === TRUE)
+	{
+	    // Add files to the zip file
+	    if (!$zip->addFile($file))
+	    {
+	    	return false;
+	    }
+
+	    // All files are added, so close the zip file.
+	    $zip->close();
+
+	    return $zipName;
+	}
+
+	return false;
+}
+
+function unZipFile($file)
+{
+	$zipName= $file.'.zip';
+	$zip = new ZipArchive;
+	if ($zip->open($zipName) === TRUE)
+	{
+	    // Add files to the zip file
+	    if (!$zip->extractTo($file))
+	    {
+	    	return false;
+	    }
+	    // All files are added, so close the zip file.
+	    $zip->close();
+
+	    return $file;
+	}
+
+	return false;
+}
 ?>

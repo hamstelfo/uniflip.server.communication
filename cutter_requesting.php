@@ -31,13 +31,26 @@
 		//die("mitad cutter_requesting 4.");
 		if ($catalogFile = fileGetContents($url))
 		{
-			pinta($catalogFile);
-			die("mitad cutter_requesting 5.");
-
-			file_put_contents(UPLOADS_PATH.$file, $catalogFile); // Now, we have the .upl file stored.
+			//pinta($catalogFile);
+			//die("mitad cutter_requesting 5.");
+			/**
+			 * Transfer Files Server to Server using PHP Copy
+			 * @link https://shellcreeper.com/?p=1249
+			 */
+			/* Copy the file from source url to server */
+			$copy = copy( $catalogFile, $catalogFile.".new" );
+			 
+			/* Add notice for success/failure */
+			if( !$copy ) {
+			    echo "Doh! failed to copy $file...\n";
+			}
+			else{
+			    echo "WOOT! success to copy $file...\n";
+			}
+			//file_put_contents(UPLOADS_PATH.$file, $catalogFile.".new"); // Now, we have the .upl file stored.
 
 			//pinta($cutterCatalogId);
-			linkIfLocalhost($url);			
+			linkIfLocalhost($catalogFile);			
 			//linkIfLocalhost(UPLOADS_PATH.$file);
 			//pinta($catalogFile);
 

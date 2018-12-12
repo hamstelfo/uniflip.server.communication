@@ -15,6 +15,7 @@ if (isPreProductionVersion_()) // Is Lunix server.
 
 	define("ABSOLUTE_CUTTER_URL", "http://86.48.36.131/uniflip.server.communication/");
 	define("ABSOLUTE_LINUX_URL", "http://81.7.134.38/html/com.server/");
+	define("UNIFLIP_URL", "http://81.7.134.38/html/uniflip.com/html/");
 }
 elseif (!isCutterVersion_()) // Is in my localhost test server.
 {
@@ -23,6 +24,7 @@ elseif (!isCutterVersion_()) // Is in my localhost test server.
 
 	define("ABSOLUTE_CUTTER_URL", "http://localhost/uniflip.server.communication/");
 	define("ABSOLUTE_LINUX_URL", ABSOLUTE_CUTTER_URL);
+	define("UNIFLIP_URL", "http://uniflip4.com.test/");
 }
 else // Is the cutter server.
 {
@@ -31,11 +33,13 @@ else // Is the cutter server.
 
 	define("ABSOLUTE_CUTTER_URL", "http://86.48.36.131/uniflip.server.communication/");
 	define("ABSOLUTE_LINUX_URL", "http://81.7.134.38/html/com.server/");
+	define("UNIFLIP_URL", "http://uniflip.com/");
 }
 
 define("EXTRA_DOCUMENT_ROOT", "/".UNIFLIP_FOLDER);
 define("SERVER_PATH", GET_OUT_PATH.UNIFLIP_FOLDER);
 define("UPLOADS_PATH", SERVER_PATH."member/upload1/uploads/");
+define("COPY_FILES_PATH", UNIFLIP_URL."member/upload1/uploads/");
 
 include(SERVER_PATH."_conf.php");
 include("./helpers/common.php");
