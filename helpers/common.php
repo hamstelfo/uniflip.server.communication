@@ -127,14 +127,14 @@ function curl_get($url, array $get = array(), array $options = array())
     return $result; 
 } 
 
-function zipFile($file)
+function zipFile($file, $path)
 {
 	$zipName= $file.'.zip';
 	$zip = new ZipArchive;
-	if ($zip->open($zipName, ZipArchive::CREATE) === TRUE)
+	if ($zip->open($path.$zipName, ZipArchive::CREATE) === TRUE)
 	{
 	    // Add files to the zip file
-	    if (!$zip->addFile($file))
+	    if (!$zip->addFile($path.$file))
 	    {
 	    	return false;
 	    }
@@ -142,6 +142,7 @@ function zipFile($file)
 	    // All files are added, so close the zip file.
 	    $zip->close();
 
+	    echo $zipName;
 	    return $zipName;
 	}
 

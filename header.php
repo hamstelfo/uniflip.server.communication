@@ -39,7 +39,6 @@ else // Is the cutter server.
 define("EXTRA_DOCUMENT_ROOT", "/".UNIFLIP_FOLDER);
 define("SERVER_PATH", GET_OUT_PATH.UNIFLIP_FOLDER);
 define("UPLOADS_PATH", SERVER_PATH."member/upload1/uploads/");
-define("COPY_FILES_PATH", UNIFLIP_URL."member/upload1/uploads/");
 
 include(SERVER_PATH."_conf.php");
 include("./helpers/common.php");

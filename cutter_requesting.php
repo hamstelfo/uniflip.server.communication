@@ -18,58 +18,37 @@
 	$catalogData = json_decode($catalogData, true); // Now, we have the catalog info, but we need to insert it into the database..
 	
 	//pinta($catalogData);
-	//die("mitad cutter_requesting 3.");		
+	//die("mitad cutter_requesting 3.");	
+	$fileNew= $file.".new";
 
-	if ($cutterCatalogId= createCatalogCutter2($catalogData))
+	if ($bring_file= getFileFromLinuxFTP($fileNew, $file))		
 	{
-		$url = ABSOLUTE_LINUX_URL."request_file.php";
-		$url .= "?file=" . $file;
-		$url .= "&catalogid=" . $catalogId;
-		$url .= "&catalogidcutter=" . $cutterCatalogId;
-		$url .= "&memberid=" . $memberId.urlTest();
-		linkIfLocalhost($url);
-		die("mitad cutter_requesting 4.");
-		if ($catalogFileContent = fileGetContents($url))
+		updateLog($memberId, $catalogId, $catalogIdcutter, "request_file", "OK:".$fileNew);
+		//die("here we take the file from the real server.");
+		if ($cutterCatalogId= createCatalogCutter2($catalogData))
 		{
-			//pinta($catalogFile);
-			//die("mitad cutter_requesting 5.");
-			/**
-			 * Transfer Files Server to Server using PHP Copy
-			 * @link https://shellcreeper.com/?p=1249
-			 */
-			/* Copy the file from source url to server */
-			//$copy = copy( $catalogFile, $catalogFile.".new" );
-			 
-			/* Add notice for success/failure */
-			/*if( !$copy ) {
-			    echo "Doh! failed to copy $file...\n";
-			}
-			else{
-			    echo "WOOT! success to copy $file...\n";
-			}*/
-			file_put_contents(UPLOADS_PATH.$file.".new", $catalogFileContent); // Now, we have the .upl file stored.
-
-			//pinta($cutterCatalogId);
-			//linkIfLocalhost($catalogFile);			
-			//linkIfLocalhost(UPLOADS_PATH.$file);
-			//pinta($catalogFile);
-
 			$url = ABSOLUTE_LINUX_URL."cutter_runs_alone.php";
 			$url .= "?catalogid=" . $catalogId;
 			$url .= "&memberid=" . $memberId.urlTest();
 			linkIfLocalhost($url);
+			pinta("cortamos antes del run alone");
 			fileGetContents($url); // Just say the Linux that we can start the cutter process now..
+
+			die(".");
 		}
 		else
 		{
-			pinta("No file found at fileGetContents:".$url, true);
-		}
-
-		die(".");
+			$msg= "Error on createCatalogCutter2.";
+			updateLog($memberId, $catalogId, $catalogIdcutter, "request_file", $msg);
+			pinta($msg);	
+			pinta($catalogData, true);
+		}		
 	}
 	else
 	{
-		pinta("Error on createCatalogCutter2.");	
-		pinta($catalogData, true);
-	}		
+		$msg= "ERROR! getFileFromLinuxFTP: ".$file;
+		updateLog($memberId, $catalogId, $catalogIdcutter, "request_file", $msg);			
+	}	
+
+	
 ?>
