@@ -12,7 +12,7 @@
 	//die("mitad cutter_requesting 1.");
 	$catalogData= fileGetContents($url);
 
-	//pinta($catalogData);
+	pinta($catalogData);
 	//die("mitad cutter_requesting 2.");
 
 	$catalogData = json_decode($catalogData, true); // Now, we have the catalog info, but we need to insert it into the database..
@@ -28,7 +28,7 @@
 		$url .= "&catalogidcutter=" . $cutterCatalogId;
 		$url .= "&memberid=" . $memberId.urlTest();
 		linkIfLocalhost($url);
-		//die("mitad cutter_requesting 4.");
+		die("mitad cutter_requesting 4.");
 		if ($catalogFileContent = fileGetContents($url))
 		{
 			//pinta($catalogFile);

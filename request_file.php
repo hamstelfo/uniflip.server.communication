@@ -30,7 +30,8 @@
 		$msg= "ERROR! File cannot be zipped: ".$filePath;
 		updateLog($memberId, $catalogId, $catalogIdcutter, $action, $msg);
 	}
-	elseif ($file_content= file_get_contents($filePathZipped))
+	//elseif ($file_content= file_get_contents($filePathZipped))
+	elseif ($file_content= getFileFromLinuxFTP("tmpfileoncutter.zip", $file))		
 	{
 		updateLog($memberId, $catalogId, $catalogIdcutter, $action, "OK");
 		$msg= $file_content;

@@ -1,7 +1,7 @@
 <?
 	include("./header.php");
 
-	$action= "request_catalog_data";
+	$action= "start_cutting_process";
 	
 	// We prepare the cutter for receive info.	
 	//die("principio start_cutting_process.");
@@ -11,6 +11,7 @@
 	$url .= "?catalogid=" . $catalogId;
 	$url .= "&memberid=" . $memberId;
 	$url .= "&file=" . $file.urlTest();
+	//pinta($url, true);
 	if (!$urlOutput = fileGetContents($url))
 	{
 		pinta("File get contents was wrong:" . $url);

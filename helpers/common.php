@@ -52,6 +52,7 @@ function updateLog($memberId, $catalogIdLinux, $catalogIdCutter, $step, $extra= 
 			break;
 	}
 	
+	pinta($sql);
 	$result = dBQuery($sql) or die("Query failed: " . dBError());
 	dBFreeResult($result);
 	dbClose();
@@ -166,4 +167,36 @@ function unZipFile($file)
 
 	return false;
 }
+
+function getFileFromLinuxFTP($local_file, $server_file)
+{	
+	$ftp_server= "81.7.134.38";
+	$ftp_user_name= "cuttergetftp";	
+	$ftp_user_pass= "p6x86.03s";
+	$ftp_path= "";
+
+	// establecer una conexión básica
+	$conn_id = ftp_connect($ftp_server);
+
+	// iniciar sesión con nombre de usuario y contraseña
+	$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
+
+	// activar modo pasivo
+	ftp_pasv($conn_id, true);
+
+	if ($result= ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) 
+	{
+		echo "Se ha guardado satisfactoriamente en $local_file\n";
+	} 
+	else 
+	{
+		echo "Ha habido un problema\n";
+	}
+
+	// cerrar la conexión ftp
+	ftp_close($conn_id);
+
+	return $result;
+}
+
 ?>
